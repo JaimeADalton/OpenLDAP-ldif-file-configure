@@ -18,8 +18,8 @@ function AddUser {
 	sn=$(echo $cnsn | cut -d " " -f2)
         dc1=$(echo $dc | cut -d "." -f1)
         dc2=$(echo $dc | cut -d "." -f2)
-	#hash_password=$(slappasswd -d $password)
-	hash_password=$(echo $password | md5sum)
+	hash_password=$(slappasswd -d $password)
+	#hash_password=$(echo $password | md5sum)
 	
 	cat <<EOF >> ${LDAPATH}/usuario.ldif
 dn: uid=$uid,ou=$ou,dc=$dc1,dc=$dc2

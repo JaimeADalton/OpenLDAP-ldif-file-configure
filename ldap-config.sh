@@ -37,7 +37,6 @@ loginShell: /bin/bash
 userPassword: $hash_password
 givenName: $cn
 
-
 EOF
 echo
 echo "Archivo usuario.ldif guardado en $LDAPATH"
@@ -81,12 +80,8 @@ echo
 echo "Archivo unidadesorganizativas.ldif guardado en $LDAPATH"
 }
 
-function restart {
-	echo -e "\n\n\n"
-	menu
-}
-
-function menu {
+InMenu=true
+while $InMenu;do
         echo -e "[1] Crear un Usuario"
         echo -e "[2] Crear un Grupo"
         echo -e "[3] Crear un UO"
@@ -95,21 +90,18 @@ function menu {
         case $opcion in
                 1)
                         AddUser
-			restart
 			;;
                 2)
                         AddGroup
-			restart
 			;;
                 3)
                         AddOU
-			restart
 			;;
 		e|E)
 			exit 0;;
 
-                *)      clear
-			menu;;
+                *)
+			echo "Opciones 1-3; (e)xit";;
         esac
 }
 

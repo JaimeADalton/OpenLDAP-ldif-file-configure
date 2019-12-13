@@ -104,5 +104,3 @@ while $InMenu;do
 			echo "Opciones 1-3; (e)xit";;
         esac
 }
-
-menu

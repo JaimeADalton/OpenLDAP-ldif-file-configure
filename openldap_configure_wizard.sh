@@ -1,10 +1,23 @@
-#!/bin/bash
+#!/bin/bash  
+#title          :openldap_configure_wizard.sh
+#description    :Crea archivos de configuracion para OpenLDAP de usuarios, grupos y unidades organizativas
+#author         :Jaime A. Dalton
+#date           :07/11/2019
+#version        :1.0    
+#usage          :./openldap_configure_wizard.sh
+#notes          :
+#bash_version   :5.0.3(1)-release
+#============================================================================
 
+
+#Verificamos si el directorio LDAP esta en el HOME del usuario, sino, se crea.
 LDAPATH="$HOME/LDAP"
 if [ ! -d $HOME/LDAP/ ];then
 	mkdir $HOME/LDAP
 fi
 
+#Esta funcion crea crea un usuario y lo guarda en un archivo llamado usuario.ldif en el directorio $LDAPTH.
+#Procede preguntando los parametros necesarios para rellenar el archivo: uid, cn, sn, ou, dc, uidNumber, gidNumber, password
 function AddUser {
 	read -p "Nombre de usuario (uid): " uid
 	read -p "Nombre completo del usuario: " cnsn
@@ -43,6 +56,10 @@ echo "Archivo usuario.ldif guardado en $LDAPATH"
 
 }
 
+
+#Esta funcion crea crea un grupo y lo guarda en un archivo llamado grupos.ldif en el directorio $LDAPTH.
+#Procede preguntando los parametros necesarios para rellenar el archivo: cn, ou, dc, gidNumber. La funcion
+#se encarga de separar dc entre el nombre del dominio y el dominio (Ej. Nombre de dominio: asodalton.org)
 function AddGroup {
 	read -p "Nombre del grupo: " cn
         read -p "Unidad Organizativa: " ou
@@ -63,6 +80,8 @@ echo
 echo "Archivo grupos.ldif guardado en $LDAPATH"
 }
 
+#Esta funcion crea crea una unidad organizativa y lo guarda en un archivo llamado unidadesorganizativas.ldif
+#en el directorio $LDAPTH. Procede igual que la funcion anterior salvo que pregunta los parametros: ou, dc
 function AddOU {
         read -p "Unidad Organizativa: " ou
         read -p "Nombre del dominio: " dc
@@ -80,22 +99,32 @@ echo
 echo "Archivo unidadesorganizativas.ldif guardado en $LDAPATH"
 }
 
-InMenu=true
-while $InMenu;do
+#Obviamente esto es un menu que permite realizar una de las tres tareas tantas veces como se quiera.
+#Seguirá en bucle hasta que se le pida salir del programa
+while true;do
         echo -e "[1] Crear un Usuario"
         echo -e "[2] Crear un Grupo"
-        echo -e "[3] Crear un UO"
+        echo -e "[3] Crear un Unidad Organizativa"
 	echo -e "[e] Salir"
         read -p "Elige una opcion: " opcion
         case $opcion in
                 1)
-                        AddUser
+			read -p "Numero de usuarios: " n_usuarios
+			for (( usuario = 0; usuario <= $n_usuarios; usuario++));do                    
+				AddUser
+			done
 			;;
                 2)
-                        AddGroup
+			read -p "Numero de grupos: " n_grupos
+			for (( grupo = 0; grupo <= $n_grupos; grupo++));do                    
+				AddGroup
+			done
 			;;
                 3)
-                        AddOU
+                        read -p "Numero de Unidades Organizativas: " n_uos
+			for (( uo = 0; uo <= $n_uos; uo++ ));do                    
+				AddOU
+			done
 			;;
 		e|E)
 			exit 0;;

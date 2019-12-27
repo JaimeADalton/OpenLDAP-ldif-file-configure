@@ -18,6 +18,8 @@ fi
 
 #Esta funcion crea crea un usuario y lo guarda en un archivo llamado usuario.ldif en el directorio $LDAPTH.
 #Procede preguntando los parametros necesarios para rellenar el archivo: uid, cn, sn, ou, dc, uidNumber, gidNumber, password
+#(Ej: Nombre completo del usuario: Jaime Dalton; Nombre del dominio: asodalton.org).
+#La funcion se encarga de configuar el archivo correctametne
 function AddUser {
 	read -p "Nombre de usuario (uid): " uid
 	read -p "Nombre completo del usuario: " cnsn
